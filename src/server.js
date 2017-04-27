@@ -20,7 +20,7 @@ if(ENV === 'development'){
 }
 
 console.log('Connecting to DB', process.env.MONGODB_URL);
-mongoose.connect(process.env.MONGODB_URL); // connect to our database
+let database = mongoose.connect(process.env.MONGODB_URL); // connect to our database
 
 // helper for formatting message
 const sendErrorResponse = (res, code, message, format = 'json') => {
@@ -58,6 +58,13 @@ const checkPermissions = (req, res, next, model) => {
 
 // Create express app
 let app = express();
+
+app.use(function (req, res, next) {
+	res.on('finish', function() {
+		database.disconnect();
+		next();
+	});
+});
 
 // log requests to the console
 app.use(morgan('dev')); 
@@ -214,6 +221,7 @@ router.route('/:model/:id([0-9a-fA-F]{24})')
 // ----------------------------------------------------
 // End routes /:model/:id
 // ----------------------------------------------------
+
 
 // ----------------------------------------------------
 // REGISTER ROUTES
