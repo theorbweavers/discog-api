@@ -45,6 +45,7 @@ const jwtCheck = jwt({
 //middleware to check scopes
 const checkPermissions = (req, res, next, model) => {
 	try{
+		// TODO check just method permission
 		let permission = `${req.method.toLowerCase()}:${model.toLowerCase()}`;
 		if(req.user.permissions.includes(permission)){
 			next();
@@ -59,12 +60,13 @@ const checkPermissions = (req, res, next, model) => {
 // Create express app
 let app = express();
 
-app.use(function (req, res, next) {
-	res.on('finish', function() {
-		database.disconnect();
-		next();
-	});
-});
+// app.use(function (req, res, next) {
+// 	res.on('finish', function() {
+// 		database.disconnect();
+// 		next();
+// 	});
+// 	next();
+// });
 
 // log requests to the console
 app.use(morgan('dev')); 

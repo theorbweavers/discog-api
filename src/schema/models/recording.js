@@ -12,7 +12,13 @@ const RecordingSchema = new mongoose.Schema({
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'Person'
 		}
-	]
+	],
+	watsonToneStatistics: {
+		type: Object
+	},
+	soundcloudId: {
+		type: String
+	},
 });
 
 const Recording = Content.discriminator('Recording', RecordingSchema);
